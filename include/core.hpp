@@ -45,9 +45,14 @@ struct Offset {
         mvaddstr(y + _y, 2 * (x + _x), "  ");
     };
 
+    inline void mv(int _y, int _x)
+    {
+        move(y + _y, 2 * (x + _x));
+    }
+
     inline void delLine(int _y)
     {
-        move(y + _y, 0);
+        mv(_y, 0);
         clrtoeol();
     }
 };

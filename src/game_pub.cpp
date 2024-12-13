@@ -80,7 +80,7 @@ void Game::welcome()
         s = L"＃蛇＃";
 
         offset.mvPrint(y, x, s);
-        move(y, 2 * (x + 1));
+        offset.mv(y, x + 1);
         getch();
     }
 
