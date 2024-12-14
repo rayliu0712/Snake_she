@@ -3,10 +3,10 @@
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
+using namespace std;
 using namespace tool;
 
-void handler(int sig)
-{
+void handler(int sig) {
     endwin();
 
     if (sig == SIGINT)
@@ -17,8 +17,7 @@ void handler(int sig)
     exit(0);
 }
 
-Game::Game(int fps, int fReward)
-{
+Game::Game(int fps, int fReward) {
     signal(SIGINT, handler);
     signal(SIGWINCH, handler);
     setlocale(LC_ALL, "");
@@ -36,14 +35,12 @@ Game::Game(int fps, int fReward)
         F_REWARD = fReward;
 }
 
-Game::~Game()
-{
+Game::~Game() {
     if (!isendwin())
         endwin();
 }
 
-void Game::welcome()
-{
+void Game::welcome() {
     auto offset = Offset();
 
     wstring s = L"［蛇］";
@@ -53,8 +50,8 @@ void Game::welcome()
     offset.mvPrint(y, x, s);
     blinkCur();
 
-    vector<int> konamiCmd = { KEY_UP, KEY_UP, KEY_DOWN, KEY_DOWN,
-        KEY_LEFT, KEY_RIGHT, KEY_LEFT, KEY_RIGHT, 'b', 'a' };
+    vector<int> konamiCmd = {KEY_UP,    KEY_UP,   KEY_DOWN,  KEY_DOWN, KEY_LEFT,
+                             KEY_RIGHT, KEY_LEFT, KEY_RIGHT, 'b',      'a'};
 
     bool isCombo = true;
     for (int i = 0; i < konamiCmd.size(); i++) {
@@ -88,8 +85,7 @@ void Game::welcome()
 }
 
 // hardcoded offset !
-void Game::adjustMapSize()
-{
+void Game::adjustMapSize() {
     // BUTTON1 left
     // BUTTON2 center
     // BUTTON3 right
@@ -97,9 +93,9 @@ void Game::adjustMapSize()
     // BUTTON5 down
 
     MEVENT event;
-    mmask_t& bstate = event.bstate;
-    int& mouseY = event.y;
-    int& mouseX = event.x;
+    mmask_t &bstate = event.bstate;
+    int &mouseY = event.y;
+    int &mouseX = event.x;
 
     while (true) {
         clear();
@@ -130,7 +126,8 @@ void Game::adjustMapSize()
                 arrow = Dir::RIGHT;
             else if (bstate & BUTTON4_PRESSED)
                 arrow = Dir::DOWN;
-            else if (bstate & BUTTON1_CLICKED && mouseY == btnY && coInterval(btnStartX, mouseX, btnEndX))
+            else if (bstate & BUTTON1_CLICKED && mouseY == btnY &&
+                     coInterval(btnStartX, mouseX, btnEndX))
                 break;
             else
                 continue;
@@ -162,8 +159,7 @@ void Game::adjustMapSize()
     clearNow();
 }
 
-void Game::playLoop()
-{
+void Game::playLoop() {
     auto offset = Offset::fromMap();
     dieReset();
     prePlay();
@@ -181,7 +177,9 @@ void Game::playLoop()
                 score /= 2;
                 dieReset();
 
-                wstring s = fmt::format(L"存活{}秒", toSnum(time(nullptr) - lastTime));
+                wstring s =
+                    fmt::format(L"存活{}秒", toSnum(time(nullptr) - lastTime));
+
                 Offset::fromMap().mvPrint(midLen(), midWid(s), s);
                 refresh();
                 blinkCur();
@@ -201,7 +199,8 @@ void Game::playLoop()
             }
 
         } else if (status == Status::WIN) {
-            wstring s = fmt::format(L"用時{}秒獲勝", toSnum(time(nullptr) - startTime));
+            wstring s =
+                fmt::format(L"用時{}秒獲勝", toSnum(time(nullptr) - startTime));
             offset.mvPrint(midLen(), midWid(s), s);
             refresh();
             blinkCur();

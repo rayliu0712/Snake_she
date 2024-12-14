@@ -6,7 +6,7 @@
 #include <vector>
 
 class Game {
-public:
+  public:
     Game(int, int);
 
     ~Game();
@@ -17,7 +17,7 @@ public:
 
     void playLoop();
 
-private:
+  private:
     struct Point {
         int y = -2, x;
 
@@ -25,24 +25,14 @@ private:
 
         inline bool isAvailable() const { return y != -2; }
 
-        bool operator==(const Point& other) const
-        {
+        bool operator==(const Point &other) const {
             return y == other.y && x == other.x;
         }
     };
 
-    enum Dir {
-        UP,
-        LEFT,
-        DOWN,
-        RIGHT
-    };
+    enum Dir { UP, LEFT, DOWN, RIGHT };
 
-    enum Status {
-        RUNNING,
-        DEAD,
-        WIN
-    };
+    enum Status { RUNNING, DEAD, WIN };
 
     // can set by flag
     int INIT_FPS = 10;
@@ -66,18 +56,13 @@ private:
     std::deque<Point> snake;
     std::vector<Point> obstacles;
 
-    inline int midLen(int n = 1)
-    {
-        return tool::mid(len, n);
-    }
+    inline int midLen(int n = 1) { return tool::mid(len, n); }
 
-    inline int midWid(const std::wstring& s)
-    {
+    inline int midWid(const std::wstring &s) {
         return tool::mid(wid, s.length());
     }
 
-    void dieReset()
-    {
+    void dieReset() {
         boostLeftMillis = 0;
         fps = INIT_FPS;
         dir = Dir::RIGHT;
@@ -88,9 +73,9 @@ private:
         live.destroy();
 
         snake.clear();
-        snake.push_back({ midLen(), wid / 3 + 1 }); // head
-        snake.push_back({ midLen(), wid / 3 }); // body
-        snake.push_back({ midLen(), wid / 3 - 1 }); // tail
+        snake.push_back({midLen(), wid / 3 + 1}); // head
+        snake.push_back({midLen(), wid / 3});     // body
+        snake.push_back({midLen(), wid / 3 - 1}); // tail
 
         obstacles.clear();
     }
@@ -115,7 +100,7 @@ private:
 
     bool isDead();
 
-    void gen(Point&);
+    void gen(Point &);
 
     void genObstcales();
 

@@ -1,9 +1,9 @@
 #include "core.hpp"
 #include "game.hpp"
+using namespace std;
 using namespace tool;
 
-void Game::drawWall()
-{
+void Game::drawWall() {
     auto offset = Offset::fromWall();
     wchar_t SWALL = L'牆';
 
@@ -16,8 +16,7 @@ void Game::drawWall()
     }
 }
 
-void Game::prePlay()
-{
+void Game::prePlay() {
     hideCur();
     clear();
     drawDashboard();
@@ -34,14 +33,14 @@ void Game::prePlay()
     nodelay(stdscr, true);
 }
 
-void Game::drawDashboard()
-{
+void Game::drawDashboard() {
     auto offset = Offset();
     offset.delLine(0);
 
     // 顯示溢出 if 99
     int scoreMaxN = intLen(len * wid * 99);
-    wstring scoreStr = wstring(scoreMaxN - intLen(score), SNUMS[0]) + toSnum(score);
+    wstring scoreStr =
+        wstring(scoreMaxN - intLen(score), SNUMS[0]) + toSnum(score);
     offset.mvPrint(0, 0, scoreStr);
 
     if (boostLeftMillis > 0) {
@@ -54,8 +53,7 @@ void Game::drawDashboard()
     offset.mvPrint(0, wid + 2 - livesStr.length(), livesStr);
 }
 
-void Game::drawEle()
-{
+void Game::drawEle() {
     auto offset = Offset::fromMap();
 
     offset.mvPrint(rat.y, rat.x, L'鼠');
@@ -65,12 +63,11 @@ void Game::drawEle()
         offset.mvPrint(boost.y, boost.x, L'速');
     if (live.isAvailable())
         offset.mvPrint(live.y, live.x, L'命');
-    for (const auto& obstacle : obstacles)
+    for (const auto &obstacle : obstacles)
         offset.mvPrint(obstacle.y, obstacle.x, L'牆');
 }
 
-void Game::drawSnake(bool isdead)
-{
+void Game::drawSnake(bool isdead) {
     auto offset = Offset::fromMap();
 
     for (int i = snake.size() - 1; i >= 0; i--) {
@@ -85,9 +82,8 @@ void Game::drawSnake(bool isdead)
     }
 }
 
-void Game::eraseSnake()
-{
+void Game::eraseSnake() {
     auto offset = Offset::fromMap();
-    for (const auto& cell : snake)
+    for (const auto &cell : snake)
         offset.delChar(cell.y, cell.x);
 }

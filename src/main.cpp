@@ -2,10 +2,8 @@
 #include <memory>
 using namespace std;
 
-int main(int argc, char** argv)
-{
-    // flags: "--fps" "--freward"
-
+// flags: "--fps" "--freward"
+int main(int argc, char **argv) {
     int fps = -1;
     int fReward = -1;
 

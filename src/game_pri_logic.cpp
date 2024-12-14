@@ -1,9 +1,9 @@
 #include "core.hpp"
 #include "game.hpp"
+using namespace std;
 using namespace tool;
 
-Game::Point Game::nextHead(int key)
-{
+Game::Point Game::nextHead(int key) {
     if (is(key, KEY_UP, 'w') && dir != Dir::DOWN)
         dir = Dir::UP;
     else if (is(key, KEY_LEFT, 'a') && dir != Dir::RIGHT)
@@ -25,15 +25,14 @@ Game::Point Game::nextHead(int key)
     return head;
 }
 
-bool Game::isDead()
-{
+bool Game::isDead() {
     Point head = snake.front();
-    return is(head.y, -1, len) || is(head.x, -1, wid) || in(obstacles, head) || in(snake, 1, head);
+    return is(head.y, -1, len) || is(head.x, -1, wid) || in(obstacles, head) ||
+           in(snake, 1, head);
 }
 
-void Game::gen(Point& ele)
-{
-    vector<Point> eles = { rat, shrink, boost, live };
+void Game::gen(Point &ele) {
+    vector<Point> eles = {rat, shrink, boost, live};
 
     auto it = index(eles, ele);
     if (it != eles.end())
@@ -41,19 +40,18 @@ void Game::gen(Point& ele)
 
     Point point;
     while (true) {
-        point = { rand() % len, rand() % wid };
+        point = {rand() % len, rand() % wid};
         if (!in(eles, point) && !in(snake, point) && !in(obstacles, point))
             break;
     }
     ele = point;
 }
 
-void Game::genObstcales()
-{
+void Game::genObstcales() {
     Point point;
     while (true) {
         gen(point);
-        for (auto& obstacle : obstacles)
+        for (auto &obstacle : obstacles)
             if (obstacle == point)
                 continue;
         break;
@@ -62,8 +60,7 @@ void Game::genObstcales()
 }
 
 // hardcoded value !
-Game::Status Game::play()
-{
+Game::Status Game::play() {
     bool isdead = isDead();
     drawDashboard();
     drawEle();
