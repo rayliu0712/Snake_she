@@ -1,25 +1,27 @@
 #include "game.hpp"
-#include <cstdlib>
 #include <memory>
+using namespace std;
 
-// flags: "--fps" "--freward"
 int main(int argc, char** argv)
 {
+    // flags: "--fps" "--freward"
+
     int fps = -1;
     int fReward = -1;
 
     for (int i = 1; i < argc - 1; i++) {
-        std::string arg = argv[i];
+        string arg = argv[i];
+
         if (arg == "--fps") {
             i++;
-            fps = atoi(argv[i]);
+            fps = stoi(arg);
         } else if (arg == "--freward") {
             i++;
-            fReward = atoi(argv[i]);
+            fReward = stoi(arg);
         }
     }
 
-    static auto game = std::make_unique<Game>(fps, fReward);
+    static auto game = make_unique<Game>(fps, fReward);
     game->welcome();
     game->adjustMapSize();
     game->playLoop();
