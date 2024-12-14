@@ -17,7 +17,23 @@ void handler(int sig) {
     exit(0);
 }
 
-Game::Game(int fps, int fReward) {
+Game::Game(int argc, char **argv) {
+    try {
+        for (int i = 1; i < argc; i++) {
+            string s = argv[i];
+
+            if (s == "--fps" && i < argc - 1)
+                INIT_FPS = stoi(argv[++i]);
+            else if (s == "--reward-frequency" && i < argc - 1)
+                REWARD_FREQUENCY = stoi(argv[++i]);
+            else
+                throw 0;
+        }
+    } catch (...) {
+        cout << "參數無效\n";
+        exit(1);
+    }
+
     signal(SIGINT, handler);
     signal(SIGWINCH, handler);
     setlocale(LC_ALL, "");
@@ -28,11 +44,6 @@ Game::Game(int fps, int fReward) {
     noecho();
     keypad(stdscr, true);
     mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
-
-    if (fps != -1)
-        INIT_FPS = fps;
-    if (fReward != -1)
-        F_REWARD = fReward;
 }
 
 Game::~Game() {
@@ -50,24 +61,17 @@ void Game::welcome() {
     offset.mvPrint(y, x, s);
     blinkCur();
 
-    vector<int> konamiCmd = {KEY_UP,    KEY_UP,   KEY_DOWN,  KEY_DOWN, KEY_LEFT,
-                             KEY_RIGHT, KEY_LEFT, KEY_RIGHT, 'b',      'a'};
+    int konamiCmd[] = {KEY_UP,    KEY_UP,   KEY_DOWN,  KEY_DOWN, KEY_LEFT,
+                       KEY_RIGHT, KEY_LEFT, KEY_RIGHT, 'b',      'a'};
 
     bool isCombo = true;
-    for (int i = 0; i < konamiCmd.size(); i++) {
+    for (int i = 0; i < 10; i++) {
         int key = getch();
         int cmd = konamiCmd[i];
 
-        if (i < 8) {
-            if (key != cmd) {
-                isCombo = false;
-                break;
-            }
-        } else {
-            if (tolower(key) != cmd) {
-                isCombo = false;
-                break;
-            }
+        if ((i < 8 && key != cmd) || (i >= 8 && tolower(key) != cmd)) {
+            isCombo = false;
+            break;
         }
     }
 
@@ -84,14 +88,7 @@ void Game::welcome() {
     hideCur();
 }
 
-// hardcoded offset !
 void Game::adjustMapSize() {
-    // BUTTON1 left
-    // BUTTON2 center
-    // BUTTON3 right
-    // BUTTON4 up
-    // BUTTON5 down
-
     MEVENT event;
     mmask_t &bstate = event.bstate;
     int &mouseY = event.y;

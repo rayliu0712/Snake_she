@@ -115,7 +115,7 @@ Game::Status Game::play() {
         snake.pop_back();
     }
 
-    if (eatRat && score % F_REWARD == 0) {
+    if (eatRat && score % REWARD_FREQUENCY == 0) {
         int p = rand() % 100;
         if (p >= 100 - 40)
             genObstcales();

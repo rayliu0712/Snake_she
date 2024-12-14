@@ -7,7 +7,7 @@
 
 class Game {
   public:
-    Game(int, int);
+    Game(int, char **);
 
     ~Game();
 
@@ -36,7 +36,7 @@ class Game {
 
     // can set by flag
     int INIT_FPS = 10;
-    int F_REWARD = 5;
+    int REWARD_FREQUENCY = 5;
 
     // map
     int len = 5;
