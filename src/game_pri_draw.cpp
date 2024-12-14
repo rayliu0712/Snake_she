@@ -1,6 +1,5 @@
 #include "core.hpp"
 #include "game.hpp"
-using namespace std;
 using namespace tool;
 
 void Game::drawWall()
@@ -26,7 +25,7 @@ void Game::prePlay()
 
     auto offset = Offset::fromMap();
     for (int i = 3; i > 0; i--) {
-        wstring s = format(L"［{}〕", toSnum(i));
+        wstring s = fmt::format(L"［{}〕", toSnum(i));
         offset.mvPrint(midLen(), midWid(s), s);
         refresh();
         napms(1000);

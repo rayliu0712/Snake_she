@@ -23,9 +23,12 @@ private:
 
         inline void destroy() { y = -2; }
 
-        inline bool isAvailable() { return y != -2; }
+        inline bool isAvailable() const { return y != -2; }
 
-        bool operator==(const Point&) const = default;
+        bool operator==(const Point& other) const
+        {
+            return y == other.y && x == other.x;
+        }
     };
 
     enum Dir {
@@ -68,7 +71,7 @@ private:
         return tool::mid(len, n);
     }
 
-    inline int midWid(const wstring& s)
+    inline int midWid(const std::wstring& s)
     {
         return tool::mid(wid, s.length());
     }

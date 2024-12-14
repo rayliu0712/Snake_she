@@ -3,7 +3,6 @@
 #include <csignal>
 #include <cstdlib>
 #include <iostream>
-using namespace std;
 using namespace tool;
 
 void handler(int sig)
@@ -182,7 +181,7 @@ void Game::playLoop()
                 score /= 2;
                 dieReset();
 
-                wstring s = format(L"存活{}秒", toSnum(time(nullptr) - lastTime));
+                wstring s = fmt::format(L"存活{}秒", toSnum(time(nullptr) - lastTime));
                 Offset::fromMap().mvPrint(midLen(), midWid(s), s);
                 refresh();
                 blinkCur();
@@ -202,7 +201,7 @@ void Game::playLoop()
             }
 
         } else if (status == Status::WIN) {
-            wstring s = format(L"用時{}秒獲勝", toSnum(time(nullptr) - startTime));
+            wstring s = fmt::format(L"用時{}秒獲勝", toSnum(time(nullptr) - startTime));
             offset.mvPrint(midLen(), midWid(s), s);
             refresh();
             blinkCur();

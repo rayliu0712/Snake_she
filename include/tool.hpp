@@ -1,14 +1,15 @@
 #ifndef TOOL_HPP
 #define TOOL_HPP
 
-#include <format>
-#include <ranges>
+#include <algorithm>
+#include <fmt/xchar.h>
 #include <string>
-using std::wstring;
 
 namespace tool {
 
-const auto SNUMS = L"０１２３４５６７８９";
+using namespace std;
+
+const wstring SNUMS = L"０１２３４５６７８９";
 
 inline int mid(int w, int n = 1)
 {
@@ -25,12 +26,12 @@ inline bool coInterval(int x, int y, int z)
 
 inline int intLen(int x)
 {
-    return std::to_string(x).length();
+    return to_string(x).length();
 }
 
 inline wstring toSnum(int x)
 {
-    auto s = std::to_wstring(x);
+    auto s = to_wstring(x);
     for (auto& c : s)
         c = SNUMS[c - L'0'];
     return s;
@@ -43,9 +44,21 @@ inline bool is(T t, Args... args)
 }
 
 template <typename T, typename U>
-inline bool in(const T& con, U value)
+typename T::iterator index(T& con, U value)
 {
-    return std::ranges::find(con, value) != con.end();
+    return find(con.begin(), con.end(), value);
+}
+
+template <typename T, typename U>
+inline bool in(T& con, int start, U value)
+{
+    return find(con.begin() + start, con.end(), value) != con.end();
+}
+
+template <typename T, typename U>
+inline bool in(T& con, U value)
+{
+    return in(con, 0, value);
 }
 
 }

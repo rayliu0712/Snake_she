@@ -33,12 +33,12 @@ struct Offset {
 
     static inline Offset fromMap() { return Offset(3, 1); }
 
-    inline void mvPrint(int _y, int _x, const wstring& s)
+    inline void mvPrint(int _y, int _x, const std::wstring& s)
     {
         mvaddwstr(y + _y, 2 * (x + _x), s.c_str());
     }
 
-    inline void mvPrint(int _y, int _x, wchar_t c) { mvPrint(_y, _x, wstring { c }); }
+    inline void mvPrint(int _y, int _x, wchar_t c) { mvPrint(_y, _x, std::wstring { c }); }
 
     inline void delChar(int _y, int _x)
     {

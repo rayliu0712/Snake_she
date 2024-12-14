@@ -1,6 +1,5 @@
 #include "core.hpp"
 #include "game.hpp"
-using namespace std;
 using namespace tool;
 
 Game::Point Game::nextHead(int key)
@@ -28,15 +27,15 @@ Game::Point Game::nextHead(int key)
 
 bool Game::isDead()
 {
-    auto head = snake.front();
-    return is(head.y, -1, len) || is(head.x, -1, wid) || in(obstacles, head) || in(snake | views::drop(1), head);
+    Point head = snake.front();
+    return is(head.y, -1, len) || is(head.x, -1, wid) || in(obstacles, head) || in(snake, 1, head);
 }
 
 void Game::gen(Point& ele)
 {
     vector<Point> eles = { rat, shrink, boost, live };
 
-    auto it = ranges::find(eles, ele);
+    auto it = index(eles, ele);
     if (it != eles.end())
         eles.erase(it);
 
@@ -84,7 +83,7 @@ Game::Status Game::play()
         }
     }
 
-    auto head = nextHead(getch());
+    Point head = nextHead(getch());
     snake.push_front(head);
 
     bool eatRat;
