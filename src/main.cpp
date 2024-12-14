@@ -1,7 +1,7 @@
 #include "game.hpp"
 #include <memory>
 
-// flags: "--fps" "--reward-frequency"
+// flags: "--fps=???" "--reward-frequency=???"
 int main(int argc, char **argv) {
     static auto game = std::make_unique<Game>(argc, argv);
     game->welcome();

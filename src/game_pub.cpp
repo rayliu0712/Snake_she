@@ -20,12 +20,20 @@ void handler(int sig) {
 Game::Game(int argc, char **argv) {
     try {
         for (int i = 1; i < argc; i++) {
-            string s = argv[i];
+            string arg;
 
-            if (s == "--fps" && i < argc - 1)
-                INIT_FPS = stoi(argv[++i]);
-            else if (s == "--reward-frequency" && i < argc - 1)
-                REWARD_FREQUENCY = stoi(argv[++i]);
+            auto startsWith = [&](const string &flag) {
+                string fullArg = argv[i];
+                bool result = fullArg.compare(0, flag.length(), flag) == 0;
+                if (result)
+                    arg = fullArg.substr(flag.length());
+                return result;
+            };
+
+            if (startsWith("--fps="))
+                INIT_FPS = stoi(arg);
+            else if (startsWith("--reward-frequency="))
+                REWARD_FREQUENCY = stoi(arg);
             else
                 throw 0;
         }
